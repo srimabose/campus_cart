@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Campus Cart</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Header Section */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 5%;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0d9d9;
+            flex-wrap: wrap;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .CampusCartLogo {
+            height: 40px; 
+        }
+
+        header h1 {
+            color: rgb(138, 54, 202);
+            font-style: italic;
+            font-size: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .nav-bar a {
+            font-size: 14px;
+            color: #282c3f;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 8px;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+
+        .nav-bar a:hover {
+            border-bottom: 3px solid #f54e77;
+        }
+
+        /* Main Content */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        h1.page-title {
+            text-align: center;
+            margin: 20px 0;
+            color: #282c3f;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* Orders */
+        .orders-container {
+            margin-top: 20px;
+        }
+
+        .order-card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .order-header {
+            background-color: #f5f5f7;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .order-id {
+            font-weight: bold;
+            color: #282c3f;
+            font-size: 14px;
+        }
+
+        .order-date {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .order-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-delivered {
+            background-color: #e6f7ea;
+            color: #267e3e;
+        }
+
+        .status-ready {
+            background-color: #e6f4fa;
+            color: #186fa2;
+        }
+
+        .status-cancelled {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .status-processing {
+            background-color: #fff8e6;
+            color: #d68102;
+        }
+
+        .order-items {
+            padding: 12px;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-right: 15px;
+        }
+
+        .item-details {
+            flex-grow: 1;
+            min-width: 150px;
+        }
+
+        .item-name {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #282c3f;
+        }
+
+        .item-price {
+            font-size: 14px;
+            color: #3e4152;
+        }
+
+        .item-quantity {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .order-footer {
+            background-color: #f9f9f9;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .order-info {
+            font-size: 13px;
+        }
+
+        .order-total {
+            font-size: 16px;
+            font-weight: bold;
+            color: #282c3f;
+        }
+
+        .order-actions button {
+            background-color: rgb(138, 54, 202);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .order-actions button:hover {
+            background-color: rgb(116, 45, 170);
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .no-orders p {
+            margin-bottom: 20px;
+            color: #888;
+            font-size: 16px;
+        }
+
+        .shop-now-btn {
+            background-color: rgb(138, 54, 202);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .shop-now-btn:hover {
+            background-color: rgb(116, 45, 170);
+        }
+
+        /* Footer */
+        footer{
+            background: #f5f5f7;
+            padding: 20px 5%;
+            margin-top: 30px;
+        }
+
+        .footer-container{
+            padding: 20px 0 0 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .footer-column{
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-column h3{
+            color: #282c3f;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .footer-column a{
+            font-size: 14px;
+            color: #696b79;
+            text-decoration: none;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 3%;
+                justify-content: center;
+                text-align: center;
+            }
+            
+            .logo-container {
+                margin-bottom: 10px;
+            }
+            
+            .nav-bar {
+                width: 100%;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            h1.page-title {
+                font-size: 24px;
+                margin: 15px 0;
+            }
+            
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .order-id, .order-date, .order-status {
+                margin-bottom: 5px;
+            }
+            
+            .item-image {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .footer-column {
+                width: 45%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .CampusCartLogo {
+                height: 35px;
+            }
+            
+            header h1 {
+                font-size: 18px;
+            }
+            
+            .nav-bar a {
+                font-size: 12px;
+                padding: 6px;
+            }
+            
+            .order-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .order-total {
+                margin-top: 5px;
+            }
+            
+            .order-info {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            
+            .footer-column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="/campus-cart"><img class="CampusCartLogo" src="/images/Campus Cart Logo.jpg" alt="Campus Cart Logo"></a>
+            <h1>Campus Cart</h1>
+        </div>     
+        <nav class="nav-bar">
+            <a href="/shopping-cart">My Cart</a>
+            <a href="/my-orders">My Orders</a>
+            <button onclick="handleLogout()" 
+                style="background-color: #ff3e6c; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">
+                Logout
+            </button>
+        </nav>       
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">My Orders</h1>
+
+        <!-- No Orders State -->
+        <div class="no-orders">
+            <p>You haven't placed any orders yet</p>
+            <a href="/campus-cart" class="shop-now-btn">Shop Now</a>
+        </div>
+
+        <!-- Orders List - This would be shown conditionally when there are orders -->
+        <div class="orders-container" style="display: none;">
+            <!-- Orders will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>USEFUL LINKS</h3>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
+                <a href="/delivery">Delivery</a>
+            </div>
+            
+            <div class="footer-column">
+                <h3>CATEGORIES</h3>
+                <a href="/printing-xerox">Printing & Xerox</a>
+                <a href="/stationery">Stationery</a>
+                <a href="/cold-drinks-juice">Cold Drink & Juice</a>
+                <a href="/breakfast-instant-food">Breakfast & Instant Food</a>
+                <a href="/coffee-tea">Coffee & Tea</a>
+                <a href="/packed-food">Packed Food</a>
+                <a href="/chocolates-candy">Chocolates & Candy</a>
+                <a href="/ice-cream">Icecream</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Make user data available to client-side JavaScript
+        const userData = <% if (typeof userData !== 'undefined' && userData) { %><%- JSON.stringify(userData) %><% } else { %>null<% } %>;
+        
+        async function handleLogout() {
+            try {
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = '/login';
+                } else {
+                    alert(data.message || 'Logout failed');
+                }
+            } catch (error) {
+                alert('An error occurred during logout');
+            }
+        }
+
+        // Display orders from API
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchOrders();
+        });
+        
+        async function fetchOrders() {
+            const ordersContainer = document.querySelector('.orders-container');
+            const noOrdersMessage = document.querySelector('.no-orders');
+            
+            try {
+                let response;
+                let email = localStorage.getItem('guestEmail');
+                
+                console.log("User data:", userData);
+                console.log("Guest email:", email);
+                
+                // Try to get orders based on authentication status
+                if (userData && userData._id) {
+                    console.log("Fetching orders for logged-in user with ID:", userData._id);
+                    // Logged in user
+                    response = await fetch('/api/order/user-orders', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include'
+                    });
+                } else if (email) {
+                    console.log("Fetching orders for guest user with email:", email);
+                    // Guest user with email
+                    response = await fetch(`/api/order/email/${email}`);
+                } else {
+                    console.log("No user ID or guest email found");
+                    // No authentication and no guest email
+                    noOrdersMessage.style.display = 'block';
+                    ordersContainer.style.display = 'none';
+                    return;
+                }
+                
+                if (!response.ok) {
+                    console.error(`API response status: ${response.status}`);
+                    const errorText = await response.text();
+                    console.error(`API error response: ${errorText}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log("API response:", result);
+                
+                if (!result.success || !result.orders || result.orders.length === 0) {
+                    // No orders found
+                    console.log("No orders found");
+                    noOrdersMessage.style.display = 'block';
+                    ordersContainer.style.display = 'none';
+                    
+                    // Try a fallback - if logged in but no orders, try checking for guest orders
+                    if (userData && userData.email) {
+                        console.log("Trying fallback - checking for guest orders with email:", userData.email);
+                        const fallbackResponse = await fetch(`/api/order/email/${userData.email}`);
+                        
+                        if (fallbackResponse.ok) {
+                            const fallbackResult = await fallbackResponse.json();
+                            console.log("Fallback response:", fallbackResult);
+                            
+                            if (fallbackResult.success && fallbackResult.orders && fallbackResult.orders.length > 0) {
+                                // Found orders with email
+                                console.log(`Found ${fallbackResult.orders.length} orders with email fallback`);
+                                displayOrders(fallbackResult.orders, ordersContainer, noOrdersMessage);
+                                return;
+                            }
+                        }
+                    }
+                    return;
+                }
+                
+                displayOrders(result.orders, ordersContainer, noOrdersMessage);
+                
+            } catch (error) {
+                console.error('Failed to fetch orders:', error);
+                noOrdersMessage.style.display = 'block';
+                ordersContainer.style.display = 'none';
+            }
+        }
+        
+        // Function to display orders
+        function displayOrders(orders, container, noOrdersMessage) {
+            // Hide no orders message
+            noOrdersMessage.style.display = 'none';
+            container.style.display = 'block';
+            
+            // Clear existing orders
+            container.innerHTML = '';
+            
+            // Display orders
+            orders.forEach(order => {
+                const orderDate = new Date(order.createdAt);
+                const formattedDate = orderDate.toLocaleDateString('en-IN', { 
+                    day: 'numeric', 
+                    month: 'short', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const orderElement = document.createElement('div');
+                orderElement.className = 'order-card';
+                
+                // Order header
+                const headerElement = document.createElement('div');
+                headerElement.className = 'order-header';
+                headerElement.innerHTML = `
+                    <span class="order-id">Order #${order._id.substring(order._id.length - 8)}</span>
+                    <span class="order-date">${formattedDate}</span>
+                    <span class="order-status ${getStatusClass(order.status)}">${capitalizeFirstLetter(order.status)}</span>
+                `;
+                
+                // Order items
+                const itemsElement = document.createElement('div');
+                itemsElement.className = 'order-items';
+                
+                order.items.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'order-item';
+                    
+                    if (item.type === 'print') {
+                        // Print job
+                        itemElement.innerHTML = `
+                            <div class="item-image" style="display: flex; align-items: center; justify-content: center; background-color: #f0f7ff;">
+                                <span style="font-size: 32px; color: #3b82f6;">🖨️</span>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-price">₹${item.price.toFixed(2)}</div>
+                                <div class="item-quantity">Files: ${item.details?.totalFiles || 1} | Pages: ${item.details?.totalPages || 1}</div>
+                            </div>
+                        `;
+                    } else {
+                        // Regular product
+                        const imagePath = getProductImagePath(item.name);
+                        itemElement.innerHTML = `
+                            <img src="${imagePath}" alt="${item.name}" class="item-image">
+                            <div class="item-details">
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-price">₹${item.price.toFixed(2)}</div>
+                                <div class="item-quantity">Qty: ${item.quantity || 1}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    itemsElement.appendChild(itemElement);
+                });
+                
+                // Order footer with pickup info
+                const footerElement = document.createElement('div');
+                footerElement.className = 'order-footer';
+                footerElement.innerHTML = `
+                    <div class="order-info">
+                        <div><strong>Pickup:</strong> ${order.pickup.date} at ${order.pickup.time}</div>
+                        <div><strong>Payment:</strong> ${order.paymentMode === 'cash' ? 'Cash on Pickup' : 'UPI'}</div>
+                    </div>
+                    <div class="order-total">Total: ₹${order.total.toFixed(2)}</div>
+                `;
+                
+                // Assemble order card
+                orderElement.appendChild(headerElement);
+                orderElement.appendChild(itemsElement);
+                orderElement.appendChild(footerElement);
+                
+                // Add to orders container
+                container.appendChild(orderElement);
+            });
+            
+            // Save email for future reference if guest order
+            if (orders.length > 0 && orders[0].customer && orders[0].customer.email) {
+                localStorage.setItem('guestEmail', orders[0].customer.email);
+            }
+        }
+        
+        // Get class for order status
+        function getStatusClass(status) {
+            switch (status) {
+                case 'completed':
+                    return 'status-delivered';
+                case 'ready':
+                    return 'status-ready';
+                case 'cancelled':
+                    return 'status-cancelled';
+                case 'processing':
+                case 'pending':
+                default:
+                    return 'status-processing';
+            }
+        }
+        
+        // Helper function
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+        
+        // Get product image path (same function as in shopping-cart.ejs)
+        function getProductImagePath(productName) {
+            // Map of common product names to their image paths
+            const imageMap = {
+                // Stationery
+                "Notebook": "/images/Notebook.webp",
+                "Pens": "/images/pens.webp",
+                "Highlighters": "/images/Highlighter.avif",
+                "Geometry Box": "/images/geometry box.jpeg",
+                "Scale": "/images/scale.jpeg",
+                "Pencil": "/images/pencil.jpeg",
+                "Eraser": "/images/Eraser.jpeg",
+                "Document Folder": "/images/Floder.jpeg",
+                "Calculator": "/images/Calculator.webp",
+                "Scissors": "/images/Scissors.webp",
+                "Whitener Pen": "/images/whitener.avif",
+                "Fevistik Glue": "/images/glue.avif",
+                "Rubber Bands": "/images/rubber.avif",
+                "Assignment A4 Sheets": "/images/paper.avif",
+                "Punching Machine": "/images/punching.avif",
+                "Stapler": "/images/stapler.avif",
+                
+                // Cold Drinks & Juice
+                "Frooti": "/images/Frooti.jpeg",
+                "Maaza": "/images/Maaza.jpeg",
+                "Sprite": "/images/Sprite.jpeg",
+                "Coca Cola": "/images/coca cola.jpeg",
+                "Paper Boat Aam Panna": "/images/paper boat.webp",
+                "Paper Boat Aamras": "/images/paperboat.webp",
+                "Appy Apple Drink": "/images/Appy.jpeg",
+                "Sting Energy Drink": "/images/Sting.jpeg",
+                "Slice Mango": "/images/Slice.jpeg",
+                "Real Cranberry Juice": "/images/cranberry.webp",
+                
+                // Breakfast & Instant Food
+                "Maggi Noodles": "/images/maggi.avif",
+                "Kellogg's Chocos": "/images/chocos.avif",
+                "Honey Corn Flakes": "/images/honey corn flakes.avif",
+                "Cup Noodles": "/images/cup noodles.avif",
+                "Pasta": "/images/pasta.avif",
+                "Sunfeast Yippee Pasta": "/images/Yippee pasta.avif",
+                "Hakka Noodles": "/images/Hakka Noodles.avif",
+                "Maggi Cuppa Masala": "/images/maggi cuppa masala.webp",
+                
+                // Coffee & Tea
+                "Nescafe Classic": "/images/nescafe.jpg",
+                "Bru Instant Coffee": "/images/bru.jpg",
+                "Taj Mahal Tea": "/images/taj.jpg",
+                "Green Tea": "/images/green.jpg",
+                "Masala Chai": "/images/masala chai.jpg",
+                
+                // Packed Food
+                "Lays Chips": "/images/lays.avif",
+                "Kurkure": "/images/Kurkure.avif",
+                "Bingo Mad Angles": "/images/Bingo.avif",
+                "Salted Peanuts": "/images/Peanuts.avif",
+                "Kurkure Puffcorn": "/images/Kukure Puffcorn.avif",
+                "Waffy Chocolate": "/images/Waffy Chocolate.avif",
+                "Waffy Orange": "/images/Waffy Orange.avif",
+                "Moong Dal": "/images/Moong Dal.avif",
+                
+                // Chocolates & Candy
+                "Dairy Milk": "/images/DairyMilk.avif",
+                "Cadbury 5 Star": "/images/star.avif",
+                "Nestle KitKat": "/images/kitkat.avif",
+                "Nestle Munch": "/images/munch.avif",
+                "Dairy Milk Silk": "/images/silk.avif",
+                "Snickers": "/images/snickers.avif",
+                "Nestle Milky Bar": "/images/MilkyBar.avif",
+                "Melody Chocolaty": "/images/melody.avif",
+                "Fruit Jelly": "/images/jelly.avif",
+                
+                // Ice Cream
+                "Chocolate Truffle": "/images/Chocolate Truffle.avif",
+                "Malai Kulfi": "/images/malai kulfi.avif",
+                "Havmor Wild Berries Ice Cream": "/images/Havmor Wild Berries Ice Cream.avif",
+                "Kesar Pista Kulfi": "/images/Kesar Pista Kulfi.avif",
+                "Go Zero Sugar Free": "/images/Go Zero.avif",
+                "Almond Ice Cream": "/images/Almond Ice Cream.avif",
+                "Gulkand Kulfi Stick": "/images/Gulkand Kulfi Stick.avif",
+                "Mango Kulfi Stick": "/images/Mango Kulfi Stick.avif"
+            };
+            
+            // Return the image path if found, otherwise return a default image
+            return imageMap[productName] || "/images/sample-product.jpg";
+        }
+    </script>
+</body>
+</html> 
